@@ -1,6 +1,5 @@
 import { useGetDisciplinesQuery } from "@/Store/api/materials";
 import React, { FC } from "react";
-import Statistics from "@/Widgets/Statistics/Statistics";
 
 const MainPage: FC<{}> = ({}) => {
   const { data, isLoading } = useGetDisciplinesQuery("");
@@ -13,7 +12,7 @@ const MainPage: FC<{}> = ({}) => {
 
   return (
     <>
-      <Statistics /> 
+      <div>Магазин</div>
     </>
   );
 };
