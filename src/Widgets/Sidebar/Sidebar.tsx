@@ -6,11 +6,11 @@ type TProps = {};
 const sidebarItems = [
   {
     title: "Панель",
-    link: "/panel",
+    link: "/",
     icon: "/panel.svg",
   },
   {
-    title: "Угоди",
+    title: "Транзакції",
     link: "/deals",
     icon: "/deals.svg",
   },
@@ -25,11 +25,6 @@ const sidebarItems = [
     icon: "/rating.svg",
   },
   {
-    title: "Калькулятор",
-    link: "/calculator",
-    icon: "/calculator.svg",
-  },
-  {
     title: "Магазин",
     link: "/store",
     icon: "/store.svg",
@@ -42,7 +37,6 @@ const sidebarItems = [
 ];
 
 const Sidebar: FC<TProps> = ({}) => {
-  const currentPath = "/panel";
   const [isDarkMode, setIsDarkMode] = useState(true);
 
   const toggleTheme = () => {
@@ -50,13 +44,9 @@ const Sidebar: FC<TProps> = ({}) => {
   };
 
   return (
-    <aside className="flex flex-col bg-[#151617] text-white h-screen w-[260px]">
+    <aside className="flex flex-col bg-[#151617] text-white h-screen w-1/5">
       {/* Логотип */}
-      <div className="px-4 py-6">
-        <h1 className="text-2xl font-bold">
-          Logika Invest
-        </h1>
-      </div>
+     
 
       {/* Навігаційна частина */}
       <nav className="flex-1 py-6">
@@ -65,47 +55,29 @@ const Sidebar: FC<TProps> = ({}) => {
             <li key={index}>
               <NavLink
                 to={item.link}
-                // className={`
-                //   group flex items-center gap-4 text-[16px] rounded-full h-[48px] px-4
-                //   transition-all duration-300 ease-in-out
-                //   ${
-                //     item.link === currentPath
-                //       ? "bg-white border-4 border-[#7B68EE] text-[#151617] shadow-lg"
-                //       : "text-[#B0B0B0] hover:bg-[#202020] hover:text-white hover:shadow-md"
-                //   }
-                // `}
                 className={({ isActive }) =>
-                  `group flex items-center gap-4 text-[16px] rounded-full h-[48px] px-4 transition-all duration-300 ease-in-out ${
+                  `group flex items-center gap-4 text-[16px] rounded-full h-[48px] px-4 border-4 transition-colors duration-200 ease-in-out ${
                     isActive
-                      ? "bg-white border-4 border-[#7B68EE] text-[#151617] shadow-lg"
-                      : "text-[#B0B0B0] hover:bg-[#202020] hover:text-white hover:shadow-md"
+                      ? "bg-white border-[#7B68EE] text-[#151617] shadow-lg"
+                      : "border-transparent text-[#B0B0B0] hover:bg-[#202020] hover:text-white hover:shadow-md"
                   }`
                 }
               >
-                {/* Іконка з анімацією */}
-                <div
-                  className={`
-                    w-8 h-8 rounded-full flex items-center justify-center
-                    transition-all duration-300 ease-in-out
-                    ${item.link === currentPath ? "bg-[#151617]" : ""}
-                  `}
-                >
-                  <img
-                    src={item.icon}
-                    alt={item.title}
-                    className={`
-                      w-6 h-6 transition-all duration-300 ease-in-out
-                      ${
-                        item.link === currentPath
-                          ? ""
-                          : "group-hover:brightness-110"
-                      }
-                    `}
-                  />
-                </div>
-                <span className="font-semibold transition-all duration-300 ease-in-out group-hover:translate-x-1">
-                  {item.title}
-                </span>
+                {({ isActive }) => (
+                  <>
+                    {/* Іконка з анімацією */}
+                    <div
+                      className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-200 ease-in-out ${
+                        isActive ? "bg-black shadow-lg" : "bg-transparent"
+                      }`}
+                    >
+                      <img src={item.icon} alt={item.title} />
+                    </div>
+                    <span className="font-semibold transition-colors duration-200 ease-in-out">
+                      {item.title}
+                    </span>
+                  </>
+                )}
               </NavLink>
             </li>
           ))}

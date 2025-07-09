@@ -1,8 +1,8 @@
 import { useGetDisciplinesQuery } from "@/Store/api/materials";
 import React, { FC } from "react";
-import Statistics from "@/Widgets/Statistics/Statistics";
 
-const MainPage: FC<{}> = ({}) => {
+const ArmyPage: FC<{}> = ({}) => {
+    
   const { data, isLoading } = useGetDisciplinesQuery("");
 
   if (isLoading) {
@@ -11,11 +11,12 @@ const MainPage: FC<{}> = ({}) => {
 
   console.log(data);
 
+
   return (
     <>
-      <Statistics /> 
+      <h1>Армія</h1>
     </>
   );
 };
 
-export default MainPage;
+export default ArmyPage;

@@ -1,6 +1,7 @@
-import { FC, ReactNode } from "react";
+import React, { FC, useState, ReactNode } from "react";
 import Sidebar from "@/Widgets/Sidebar/Sidebar";
-import { Outlet } from "react-router";
+import { Outlet, useLocation } from "react-router";
+import { PageMetaContext } from "./PageMetaContext";
 
 type TProps = {
   children?: ReactNode;
@@ -18,70 +19,85 @@ type PageConfig = {
   [key: string]: PageDetails;
 };
 
-// Конфигурация страниц
 const pageConfig: PageConfig = {
-  "/panel": {
+  "/": {
     title: "Панель",
-    description: "Головна панель керування вашим портфелем",
+    description: "Твій фінансовий центр",
   },
   "/deals": {
-    title: "Угоди",
-    description: "Тут зустрічаються найкращі",
+    title: "Транзакції",
+    description: "Обмінюйся з іншими користувачами",
   },
   "/deposit": {
     title: "Депозит",
-    description: "Управління вашими депозитами та рахунками",
+    description: "Поповни баланс та рорахуй прибуток",
   },
   "/rating": {
     title: "Рейтинг",
-    description: "Рейтинг інвесторів та їх показники",
+    description: "Тут зустрічаються найкращі",
   },
   "/calculator": {
     title: "Калькулятор",
-    description: "Розрахунок прибутковості та ризиків",
+    description: "Дізнайся, скільки ти можеш заробити",
   },
   "/store": {
     title: "Магазин",
-    description: "Придбайте додаткові послуги та інструменти",
+    description: "Стильний мерч",
   },
   "/army": {
     title: "Армія",
-    description: "Підтримка української армії",
+    description: "Підтримай захисників України",
   },
 };
+
+interface PageMeta {
+  title?: string;
+  description?: string;
+  setMeta: (meta: { title?: string; description?: string }) => void;
+}
+
+export const usePageMeta = () => React.useContext(PageMetaContext);
 
 const MainLayout: FC<TProps> = ({
   title: customTitle,
   description: customDescription,
-  currentPath = "/panel",
 }) => {
-
-  const pageInfo = pageConfig[currentPath] || pageConfig["/panel"];
-
-  const pageTitle = customTitle || pageInfo.title;
-  const pageDescription = customDescription || pageInfo.description;
+  const location = useLocation();
+  const currentPath = location.pathname;
+  const pageInfo = pageConfig[currentPath] || pageConfig["/"];
+  const [meta, setMeta] = useState<{ title?: string; description?: string }>({
+    title: customTitle || pageInfo.title,
+    description: customDescription || pageInfo.description,
+  });
 
   return (
-    <div className="flex h-screen text-white">
-      {/* Sidebar */}
-      <Sidebar />
-
-      {/* Main Content */}
-      <main className="flex-1 flex flex-col">
-        {/* Header */}
-        <header className="bg-[#151617] px-8 py-6">
-          <div className="max-w-7xl mx-auto">
-            <h1 className="text-3xl font-bold text-white mb-2">{pageTitle}</h1>
-            <p className="text-[#B0B0B0] text-lg">{pageDescription}</p>
+    <PageMetaContext.Provider
+      value={{
+        title: meta.title,
+        description: meta.description,
+        setMeta,
+      }}
+    >
+      <div className="flex h-screen bg-[#151718] text-white">
+        <Sidebar />
+        {/* Main Content */}
+        <main className="flex flex-col w-full overflow-hidden">
+          {/* Header */}
+          <header className="bg-[#151617]/80 backdrop-blur-md py-6 px-10 shadow-2xl z-10">
+            <h1 className="text-3xl mb-1">{pageInfo.title}</h1>
+            <p className="text-[#A1A1A1] text-lg italic">
+              {pageInfo.description}
+            </p>
+          </header>
+          {/* Content Area */}
+          <div className="flex-1 overflow-y-auto px-4 sm:px-10 py-6">
+            <div>
+              <Outlet />
+            </div>
           </div>
-        </header>
-
-        {/* Content Area */}
-        <div className="flex-1 overflow-y-auto">
-          <div className="max-w-7xl mx-auto px-8 py-6"><Outlet /></div>
-        </div>
-      </main>
-    </div>
+        </main>
+      </div>
+    </PageMetaContext.Provider>
   );
 };
 
