@@ -1,17 +1,38 @@
 import { BrowserRouter } from "react-router";
-import { Provider as ReduxProvider } from "react-redux";
 
 import Router from "./router";
-import store from "./Store";
+import { useSelector } from "react-redux";
+import { RootState } from "./Store";
+import { Theme } from "@emotion/react";
+
+import { useState } from "react";
+import { ThemeProvider, CssBaseline } from "@mui/material";
+import { lightTheme, darkTheme, purpleTheme } from "./theme";
 
 function App() {
+  const themeName = useSelector((state: RootState) => state.theme.themeName);
+
+  let theme: Theme;
+
+  if (themeName == "light") {
+    theme = lightTheme;
+  } else if (themeName == "dark") {
+    theme = darkTheme;
+  } else if (themeName == "purple") {
+    theme = purpleTheme;
+  } else {
+    theme = lightTheme;
+  }
+
   return (
     <>
-      <ReduxProvider store={store}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+
         <BrowserRouter>
           <Router />
         </BrowserRouter>
-      </ReduxProvider>
+      </ThemeProvider>
     </>
   );
 }

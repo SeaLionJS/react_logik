@@ -1,20 +1,77 @@
-import { useGetDisciplinesQuery } from "@/Store/api/materials";
-import React, { FC } from "react";
+import { useGetDisciplinesQuery } from "@/Store/api/academics";
+import {
+  useGetCurrentUserQuery,
+  useLoginMutation,
+  useLogoutMutation,
+} from "@/Store/api/accounts";
+import React, { FC, useState } from "react";
 
-const MainPage: FC<{}> = ({}) => {
-  const { data, isLoading } = useGetDisciplinesQuery("");
+const StorePage: FC<{}> = ({}) => {
+  const { data, isLoading, isError: isUserError } = useGetCurrentUserQuery();
 
-  if (isLoading) {
+  const { data: disciplineData, isLoading: isDesciplineLoading } =
+    useGetDisciplinesQuery();
+
+  const [login] = useLoginMutation();
+  const [logout] = useLogoutMutation();
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  if (isLoading || isDesciplineLoading) {
     return "...loading";
   }
 
-  console.log(data);
+  const onLogin = async () => {
+    try {
+      const d = await login({ username, password });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const onLogout = async () => {
+    try {
+      const d = await logout();
+      console.log(d);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  console.log(data, disciplineData);
 
   return (
     <>
-      <div>Магазин</div>
+      <div style={{ background: "yellow", padding: 10, width: "fit-content" }}>
+        {data && !isUserError ? (
+          <button onClick={onLogout}>Вийти</button>
+        ) : (
+          <div>
+            <label htmlFor="username">Ім'я</label>
+            <input
+              type="text"
+              onChange={(e) => setUsername(e.target.value)}
+              id="username"
+              value={username}
+            />
+            <div>
+              <label htmlFor="password">Пароль</label>
+              <input
+                type="password"
+                value={password}
+                id="password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <button onClick={onLogin}>Увійти</button>
+          </div>
+        )}
+      </div>
+
+      <div>Контент</div>
     </>
   );
 };
 
-export default MainPage;
+export default StorePage;
