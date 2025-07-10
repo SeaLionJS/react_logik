@@ -5,6 +5,9 @@ import MainLayout from "./Layouts/MainLayout";
 import StorePage from "./Pages/StorePage/StorePage";
 import ArmyPage from "./Pages/ArmyPage/ArmyPage";
 import LoginPage from "./Pages/LoginPage/LoginPage";
+import TeacherLayout from "./Layouts/TeacherLayout";
+import TeacherLoginPage from "./Pages/Teacher/TeacherLogin/TeacherLogin";
+import MainTeacher from "./Pages/Teacher/MainPage/MainPage";
 
 function Router() {
   return (
@@ -14,6 +17,10 @@ function Router() {
         <Route path="/store" element={<StorePage />} />
         <Route path="/army" element={<ArmyPage />}></Route>
         <Route path="/login" element={<LoginPage />}></Route>
+      </Route>
+      <Route path="/teacher" element={<TeacherLayout />}>
+        <Route path="/teacher/login" element={<TeacherLoginPage />} />
+        <Route path="/teacher" element={<MainTeacher />} />
       </Route>
     </Routes>
   );

@@ -3,12 +3,14 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import { accountsApi } from "./api/accounts";
 import { academicsApi } from "./api/academics";
+import themeReducer from "./slices/themeSlice";
 
 export const store = configureStore({
   reducer: {
     // Add the generated reducer as a specific top-level slice
     [accountsApi.reducerPath]: accountsApi.reducer,
     [academicsApi.reducerPath]: academicsApi.reducer,
+    theme: themeReducer,
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
@@ -20,3 +22,5 @@ export const store = configureStore({
 });
 
 export default store;
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
