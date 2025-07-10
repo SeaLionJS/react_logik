@@ -9,7 +9,11 @@ export default defineConfig({
   server: {
     port: 3000,
     proxy: {
-      // "/api": "https:/studyplayground.net"
+      "/api": {
+        target: "https://studyplayground.net:6789",
+        changeOrigin: true,
+        secure: true,
+      },
     },
   },
   resolve: {

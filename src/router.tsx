@@ -5,6 +5,7 @@ import MainLayout from "./Layouts/MainLayout";
 import StorePage from "./Pages/StorePage/StorePage";
 import ArmyPage from "./Pages/ArmyPage/ArmyPage";
 import LoginPage from "./Pages/LoginPage/LoginPage";
+import RatingPage from "./Pages/RatingPage/RatingPage";
 
 function Router() {
   return (
@@ -14,6 +15,7 @@ function Router() {
         <Route path="/store" element={<StorePage />} />
         <Route path="/army" element={<ArmyPage />}></Route>
         <Route path="/login" element={<LoginPage />}></Route>
+        <Route path="/rating" element={<RatingPage />}></Route>
       </Route>
     </Routes>
   );
