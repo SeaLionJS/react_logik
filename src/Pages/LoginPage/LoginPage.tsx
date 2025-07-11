@@ -28,9 +28,9 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-[#1A1C1E] text-white p-4">
-      <div className="bg-[#212325] rounded-3xl p-8 shadow-xl max-w-md w-full">
-        <h2 className="text-3xl font-bold text-center mb-8">Logika Invest</h2>
+    <div className="flex items-center justify-center min-h-screen text-white">
+      <div className="bg-[#212325] rounded-3xl p-8 shadow-xl w-full sm:max-w-md">
+        <h2 className="text-3xl font-bold text-center">Вхід</h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
