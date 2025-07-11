@@ -1,21 +1,30 @@
+import { useLoginMutation } from "@/Store/api/accounts";
+import { enqueueSnackbar } from "notistack";
 import React, { useState } from "react";
+import { useNavigate } from "react-router";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const [login] = useLoginMutation();
+
+  const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setError(""); // Очищуємо попередні помилки
-
-    // Тут буде логіка для перевірки облікових даних
-    if (email === "user@example.com" && password === "password") {
-      alert("Вхід успішний!");
-      // Тут можна перенаправити користувача або зберегти токен
-    } else {
-      setError("Невірний email або пароль.");
-    }
+    login({ username, password })
+      .unwrap()
+      .then((d) => {
+        enqueueSnackbar("Вхід успішно виконано", { variant: "success" });
+        setUsername("");
+        setPassword("");
+        navigate("/");
+      })
+      .catch((e) => {
+        enqueueSnackbar("Помилка входу", { variant: "error" });
+      });
   };
 
   return (
@@ -26,15 +35,15 @@ const LoginPage = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label
-              htmlFor="email"
+              htmlFor="username"
               className="block text-sm font-medium text-gray-400 mb-2"
             >
               Логін
             </label>
             <input
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               className="w-full px-4 py-2 rounded-lg bg-[#2D2F31] border border-[#3A3C3E] focus:outline-none focus:ring-2 focus:ring-[#7B68EE]"
               placeholder="Введіть ваш логін"
               required

@@ -1,5 +1,8 @@
+import { useLogoutMutation } from "@/Store/api/accounts";
+import { Button } from "@mui/material";
+import { enqueueSnackbar } from "notistack";
 import React, { FC, useState } from "react";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 
 type TProps = {};
 
@@ -38,15 +41,24 @@ const sidebarItems = [
 
 const Sidebar: FC<TProps> = ({}) => {
   const [isDarkMode, setIsDarkMode] = useState(true);
+  const [logout] = useLogoutMutation();
+  const navigate = useNavigate();
 
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
   };
 
+  const onLogout = () => {
+    logout()
+      .unwrap()
+      .then((d) => {
+        enqueueSnackbar("Вихід виконано", { variant: "success" });
+      });
+  };
+
   return (
     <aside className="flex flex-col bg-[#151617] text-white h-screen w-1/5">
       {/* Логотип */}
-     
 
       {/* Навігаційна частина */}
       <nav className="flex-1 py-6">
@@ -88,9 +100,9 @@ const Sidebar: FC<TProps> = ({}) => {
       <div className="px-4 py-6">
         <div className="flex flex-col gap-3">
           {/* Кнопка "Вийти" */}
-          <NavLink
+          <button
             className="group flex items-center gap-3 transition-all duration-300 ease-in-out"
-            to="/login"
+            onClick={onLogout}
           >
             <div className="w-8 h-8 rounded-full flex items-center justify-center bg-transparent group-hover:bg-red-500/20 transition-all duration-300 ease-in-out">
               <img
@@ -102,7 +114,7 @@ const Sidebar: FC<TProps> = ({}) => {
             <span className="text-[#B0B0B0] group-hover:text-red-400 text-[16px] transition-all duration-300 ease-in-out group-hover:translate-x-1">
               Вийти
             </span>
-          </NavLink>
+          </button>
 
           {/* Перемикач теми */}
           <div
@@ -143,7 +155,7 @@ const Sidebar: FC<TProps> = ({}) => {
                 transition-all duration-500 ease-in-out
                 ${
                   isDarkMode
-                    ? "translate-x-[calc(100%-4px)] shadow-[0_0_15px_rgba(255,215,0,0.6)]"
+                    ? "translate-x-[calc(100%+5px)] shadow-[0_0_15px_rgba(255,215,0,0.6)]"
                     : "translate-x-0 shadow-[0_0_15px_rgba(255,215,0,0.4)]"
                 }
                 left-1 border-2 border-[#FFD700]/30

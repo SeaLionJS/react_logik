@@ -1,5 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import type { AuthLoginRequest, AuthLoginResponse, User } from "../types";
+import type {
+  AuthLoginRequest,
+  AuthLoginResponse,
+  User,
+  UserUpdateRequest,
+  UserCreateRequest,
+} from "../types";
 import getCSRFToken from "@/Controllers/getCSRFToken";
 
 const SERVER_PATH = "/api/accounts/";
@@ -8,7 +14,7 @@ const SERVER_PATH = "/api/accounts/";
 export const accountsApi = createApi({
   reducerPath: "accountsApi",
   baseQuery: fetchBaseQuery({ baseUrl: SERVER_PATH, credentials: "include" }),
-  tagTypes: ["User"],
+  tagTypes: ["User", "UserList"],
   endpoints: (build) => ({
     login: build.mutation<AuthLoginResponse, AuthLoginRequest>({
       query: (credentials) => ({
@@ -35,10 +41,66 @@ export const accountsApi = createApi({
       query: () => "auth/user/",
       providesTags: ["User"],
     }),
+
+    getUsers: build.query<User[], void>({
+      query: () => "users/",
+      providesTags: ["UserList"],
+    }),
+
+    getUserById: build.query<User, string>({
+      query: (id) => `users/${id}/`,
+      providesTags: (result, error, id) => [{ type: "User", id }],
+    }),
+
+    createUser: build.mutation<User, UserCreateRequest>({
+      query: (newUser) => ({
+        url: "users/create/",
+        method: "POST",
+        body: newUser,
+        headers: {
+          "X-CSRFToken": getCSRFToken(),
+        },
+      }),
+      invalidatesTags: ["UserList"],
+    }),
+
+    updateUser: build.mutation<User, { id: string; data: UserUpdateRequest }>({
+      query: ({ id, data }) => ({
+        url: `users/${id}/update/`,
+        method: "PUT",
+        body: data,
+        headers: {
+          "X-CSRFToken": getCSRFToken(),
+        },
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: "User", id },
+        "UserList",
+      ],
+    }),
+
+    deleteUser: build.mutation<void, string>({
+      query: (id) => ({
+        url: `users/${id}/delete/`,
+        method: "DELETE",
+        headers: {
+          "X-CSRFToken": getCSRFToken(),
+        },
+      }),
+      invalidatesTags: ["UserList"],
+    }),
   }),
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useLoginMutation, useLogoutMutation, useGetCurrentUserQuery } =
-  accountsApi;
+export const {
+  useLoginMutation,
+  useLogoutMutation,
+  useGetCurrentUserQuery,
+  useCreateUserMutation,
+  useUpdateUserMutation,
+  useGetUsersQuery,
+  useGetUserByIdQuery,
+  useDeleteUserMutation,
+} = accountsApi;

@@ -3,9 +3,12 @@ import "./index.css";
 import App from "./App.tsx";
 import store from "./Store/index.ts";
 import { Provider as ReduxProvider } from "react-redux";
+import { SnackbarProvider } from "notistack";
 
 createRoot(document.getElementById("root")!).render(
-  <ReduxProvider store={store}>
-    <App />
-  </ReduxProvider>
+  <SnackbarProvider>
+    <ReduxProvider store={store}>
+      <App />
+    </ReduxProvider>
+  </SnackbarProvider>
 );

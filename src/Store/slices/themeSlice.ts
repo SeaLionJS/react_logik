@@ -12,7 +12,7 @@ const initialTheme = (): ThemeType => {
   if (saved === "light" || saved === "dark" || saved === "purple") {
     return saved;
   }
-  return "light";
+  return "purple";
 };
 
 const initialState: ThemeState = {

@@ -1,13 +1,21 @@
 import { createBrowserRouter, Route, Routes } from "react-router";
 
-import MainPage from "./Pages/PanelPage/PanelPage";
+import TeacherLayout from "./Layouts/TeacherLayout";
 import MainLayout from "./Layouts/MainLayout";
+
+// Denis
+import MainPage from "./Pages/PanelPage/PanelPage";
 import StorePage from "./Pages/StorePage/StorePage";
 import ArmyPage from "./Pages/ArmyPage/ArmyPage";
 import LoginPage from "./Pages/LoginPage/LoginPage";
-import TeacherLayout from "./Layouts/TeacherLayout";
+
+//Bohdan
 import TeacherLoginPage from "./Pages/Teacher/TeacherLogin/TeacherLogin";
-import MainTeacher from "./Pages/Teacher/MainPage/MainPage";
+import TeacherMain from "./Pages/Teacher/MainPage/MainPage";
+import TeacherGoods from "./Pages/Teacher/GoodsPage/GoodsPage";
+import TeacherDisciplines from "./Pages/Teacher/DisciplinesPage/DisciplinesPage";
+import TeacherPupils from "./Pages/Teacher/PupilsPage/PupilsPage";
+import TeacherOrders from "./Pages/Teacher/OrdersPage/OrdersPage";
 
 function Router() {
   return (
@@ -18,9 +26,13 @@ function Router() {
         <Route path="/army" element={<ArmyPage />}></Route>
         <Route path="/login" element={<LoginPage />}></Route>
       </Route>
+      <Route path="/teacher/login" element={<TeacherLoginPage />} />
       <Route path="/teacher" element={<TeacherLayout />}>
-        <Route path="/teacher/login" element={<TeacherLoginPage />} />
-        <Route path="/teacher" element={<MainTeacher />} />
+        <Route path="/teacher" element={<TeacherMain />} />
+        <Route path="/teacher/students" element={<TeacherPupils />} />
+        <Route path="/teacher/disciplines" element={<TeacherDisciplines />} />
+        <Route path="/teacher/orders" element={<TeacherOrders />} />
+        <Route path="/teacher/goods" element={<TeacherGoods />} />
       </Route>
     </Routes>
   );

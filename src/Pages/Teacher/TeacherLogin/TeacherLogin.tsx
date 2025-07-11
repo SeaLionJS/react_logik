@@ -8,38 +8,50 @@ import {
   Link,
   Avatar,
   Paper,
-  MenuItem,
-  Select,
-  InputLabel,
-  FormControl,
+  IconButton,
+  Tooltip,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import WbSunnyIcon from "@mui/icons-material/WbSunny";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import PaletteIcon from "@mui/icons-material/Palette";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "@/Store";
 import { setTheme, ThemeType } from "@/Store/slices/themeSlice";
-import { SelectChangeEvent } from "@mui/material";
+import { useLoginMutation } from "@/Store/api/accounts";
+import { enqueueSnackbar } from "notistack";
+import { useNavigate } from "react-router";
 
 const TeacherLoginPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const themeName = useSelector((state: RootState) => state.theme.themeName);
+  const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [login] = useLoginMutation();
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log("Email:", email);
-    console.log("Password:", password);
+    login({ username, password })
+      .unwrap()
+      .then((d) => {
+        enqueueSnackbar("Вхід успішно виконано", { variant: "success" });
+        setUsername("");
+        setPassword("");
+        navigate("/teacher");
+      })
+      .catch((e) => {
+        enqueueSnackbar("Помилка входу", { variant: "error" });
+      });
   };
 
-  const handleThemeChange = (
-    event: SelectChangeEvent<"light" | "dark" | "purple">
-  ) => {
-    dispatch(setTheme(event.target.value as "light" | "dark" | "purple"));
+  const handleThemeChange = (theme: ThemeType) => {
+    dispatch(setTheme(theme));
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="xs" sx={{ pt: 8 }}>
       <Paper elevation={3} sx={{ padding: 4, mt: 8 }}>
         <Box
           sx={{
@@ -55,32 +67,54 @@ const TeacherLoginPage: React.FC = () => {
             Вхід
           </Typography>
 
-          <FormControl fullWidth sx={{ mt: 2 }}>
-            <InputLabel id="theme-select-label">Тема</InputLabel>
-            <Select
-              labelId="theme-select-label"
-              id="theme-select"
-              value={themeName}
-              label="Тема"
-              onChange={handleThemeChange}
-            >
-              <MenuItem value="light">Світла (стандартна)</MenuItem>
-              <MenuItem value="dark">Темна</MenuItem>
-              <MenuItem value="purple">Фіолетова</MenuItem>
-            </Select>
-          </FormControl>
+          <Box
+            sx={{
+              display: "flex",
+              gap: 2,
+              mt: 2,
+              mb: 2,
+              justifyContent: "center",
+            }}
+          >
+            <Tooltip title="Фіолетова тема">
+              <IconButton
+                color={themeName === "purple" ? "secondary" : "default"}
+                onClick={() => handleThemeChange("purple")}
+              >
+                <PaletteIcon />
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip title="Світла тема">
+              <IconButton
+                color={themeName === "light" ? "primary" : "default"}
+                onClick={() => handleThemeChange("light")}
+              >
+                <WbSunnyIcon />
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip title="Темна тема">
+              <IconButton
+                color={themeName === "dark" ? "primary" : "default"}
+                onClick={() => handleThemeChange("dark")}
+              >
+                <DarkModeIcon />
+              </IconButton>
+            </Tooltip>
+          </Box>
 
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <TextField
               margin="normal"
               required
               fullWidth
-              label="Email"
-              name="email"
-              autoComplete="email"
+              label="Ім'я користувача"
+              name="username"
+              autoComplete="username"
               autoFocus
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
             <TextField
               margin="normal"

@@ -14,7 +14,7 @@ export interface User {
   first_name: string;
   last_name: string;
   email?: string;
-  role: "student" | "teacher" | "admin";
+  role: "student" | "teacher" | "admin" | "anonymous";
   teacher?: string | null;
   logics?: number;
   password_value?: string | null;
@@ -82,4 +82,34 @@ export interface ProjectInfo {
   version: string;
   description: string;
   author: string;
+}
+
+export interface Favorite {
+  id: string;
+  student: string;
+  product: Product;
+}
+
+export interface Order {
+  id: string;
+  student: string;
+  product: Product;
+  quantity: number;
+  total_price: number;
+  status: "pending" | "completed" | "canceled";
+  created_at: string;
+}
+
+// створення користувачів
+export interface UserCreateRequest {
+  username: string;
+  password: string;
+  first_name?: string;
+  last_name?: string;
+}
+
+export interface UserUpdateRequest {
+  username?: string;
+  first_name?: string;
+  last_name?: string;
 }

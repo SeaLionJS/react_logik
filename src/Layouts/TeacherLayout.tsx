@@ -1,22 +1,46 @@
-import React, { FC, useState, ReactNode } from "react";
-import { Outlet, useLocation } from "react-router";
+import TeacherSidebar from "@/Widgets/TeacherSidebar/TeacherSidebar";
+import { FC } from "react";
+import { Box } from "@mui/material";
+import { Outlet } from "react-router";
+import bgImage from "./bg.jpg";
+import { useSelector } from "react-redux";
+import { RootState } from "@/Store";
 
-import Header from "@/Widgets/Header/Header";
-import Footer from "@/Widgets/Footer/Footer";
-// import { useGetCurrentUserQuery } from "@/Store/api/accounts";
+const drawerWidth = 240;
 
-type TProps = {};
-
-const TeacherLayout: FC<TProps> = ({}) => {
-  const location = useLocation();
-  //   const {} = useGetCurrentUserQuery()
+const TeacherLayout: FC = () => {
+  const themeName = useSelector((state: RootState) => state.theme.themeName);
 
   return (
-    <>
-      <Header />
-      <Outlet />
-      <Footer />
-    </>
+    <Box sx={{ display: "flex" }}>
+      <TeacherSidebar />
+
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          backgroundImage: `url(${bgImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          minHeight: "100vh",
+        }}
+      >
+        <Box
+          sx={{
+            p: 2,
+            pt: 10,
+
+            backgroundColor:
+              themeName == "dark" ? "rgba(0,0,0,0.5)" : "rgba(255,255,255,0.5)",
+            backdropFilter: "blur(4px)",
+            height: "100%",
+          }}
+        >
+          <Outlet />
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

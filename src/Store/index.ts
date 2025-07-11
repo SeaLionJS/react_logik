@@ -3,6 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import { accountsApi } from "./api/accounts";
 import { academicsApi } from "./api/academics";
+import { shopApi } from "./api/shop";
 import themeReducer from "./slices/themeSlice";
 
 export const store = configureStore({
@@ -10,6 +11,7 @@ export const store = configureStore({
     // Add the generated reducer as a specific top-level slice
     [accountsApi.reducerPath]: accountsApi.reducer,
     [academicsApi.reducerPath]: academicsApi.reducer,
+    [shopApi.reducerPath]: shopApi.reducer,
     theme: themeReducer,
   },
   // Adding the api middleware enables caching, invalidation, polling,
@@ -17,7 +19,8 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       accountsApi.middleware,
-      academicsApi.middleware
+      academicsApi.middleware,
+      shopApi.middleware
     ),
 });
 

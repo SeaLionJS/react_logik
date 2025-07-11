@@ -1,7 +1,8 @@
-import React, { FC, useState, ReactNode } from "react";
+import React, { FC, useState, ReactNode, useEffect } from "react";
 import Sidebar from "@/Widgets/Sidebar/Sidebar";
-import { Outlet, useLocation } from "react-router";
+import { Outlet, useLocation, useNavigate } from "react-router";
 import { PageMetaContext } from "./PageMetaContext";
+import { useGetCurrentUserQuery } from "@/Store/api/accounts";
 
 type TProps = {
   children?: ReactNode;
@@ -64,11 +65,33 @@ const MainLayout: FC<TProps> = ({
 }) => {
   const location = useLocation();
   const currentPath = location.pathname;
+  const { data, isLoading, isError } = useGetCurrentUserQuery();
   const pageInfo = pageConfig[currentPath] || pageConfig["/"];
   const [meta, setMeta] = useState<{ title?: string; description?: string }>({
     title: customTitle || pageInfo.title,
     description: customDescription || pageInfo.description,
   });
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isLoading) {
+      return;
+    }
+
+    if (!data || isError || data.role == "anonymous") {
+      navigate("/login");
+    }
+  }, [data, isLoading, isError]);
+
+  if (isLoading) {
+    return "";
+  }
+
+  let sidebarsVisible = true;
+  if (!data || (data && isError) || data.role == "anonymous") {
+    sidebarsVisible = false;
+  }
 
   return (
     <PageMetaContext.Provider
@@ -79,16 +102,21 @@ const MainLayout: FC<TProps> = ({
       }}
     >
       <div className="flex h-screen bg-[#151718] text-white">
-        <Sidebar />
+        {sidebarsVisible ? <Sidebar /> : ""}
+
         {/* Main Content */}
         <main className="flex flex-col w-full overflow-hidden">
           {/* Header */}
-          <header className="bg-[#151617]/80 backdrop-blur-md py-6 px-10 shadow-2xl z-10">
-            <h1 className="text-3xl mb-1">{pageInfo.title}</h1>
-            <p className="text-[#A1A1A1] text-lg italic">
-              {pageInfo.description}
-            </p>
-          </header>
+          {sidebarsVisible ? (
+            <header className="bg-[#151617]/80 backdrop-blur-md py-6 px-10 shadow-2xl z-10">
+              <h1 className="text-3xl mb-1">{pageInfo.title}</h1>
+              <p className="text-[#A1A1A1] text-lg italic">
+                {pageInfo.description}
+              </p>
+            </header>
+          ) : (
+            ""
+          )}
           {/* Content Area */}
           <div className="flex-1 overflow-y-auto px-4 sm:px-10 py-6">
             <div>

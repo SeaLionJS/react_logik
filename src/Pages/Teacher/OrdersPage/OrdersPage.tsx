@@ -5,15 +5,15 @@ import Box from "@mui/material/Box";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 
-const TeacherDashboard = () => {
+const TeacherOrders = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
     <>
-      <Typography>Kонтент кабінету вчителя.</Typography>
+      <Typography>Замовлення</Typography>
     </>
   );
 };
 
-export default TeacherDashboard;
+export default TeacherOrders;
