@@ -7,6 +7,7 @@ import MainLayout from "./Layouts/MainLayout";
 import MainPage from "./Pages/PanelPage/PanelPage";
 import StorePage from "./Pages/StorePage/StorePage";
 import ArmyPage from "./Pages/ArmyPage/ArmyPage";
+import RatingPage from "./Pages/RatingPage/RatingPage";
 import LoginPage from "./Pages/LoginPage/LoginPage";
 
 //Bohdan
@@ -24,6 +25,7 @@ function Router() {
         <Route path="/" element={<MainPage />} />
         <Route path="/store" element={<StorePage />} />
         <Route path="/army" element={<ArmyPage />}></Route>
+        <Route path="/rating" element={<RatingPage />}></Route>
         <Route path="/login" element={<LoginPage />}></Route>
       </Route>
       <Route path="/teacher/login" element={<TeacherLoginPage />} />

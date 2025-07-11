@@ -1,4 +1,4 @@
-import { useGetDisciplinesQuery } from "@/Store/api/materials";
+import { useGetDisciplinesQuery } from "@/Store/api/academics";
 import React, { FC, useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -70,9 +70,7 @@ const ArmyPage: FC<{}> = ({}) => {
           Зібрано: <img src="/lgk.svg" alt="" />
           {totalCollected} з {totalGoal}
         </h1>
-        <h1 className="flex text-xl mb-4 gap-3">
-          Мій внесок: 16 LGK
-        </h1>
+        <h1 className="flex text-xl mb-4 gap-3">Мій внесок: 16 LGK</h1>
         <Box sx={{ width: "100%", position: "relative" }}>
           <LinearProgress
             variant="determinate"
