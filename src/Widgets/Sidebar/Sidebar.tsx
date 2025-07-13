@@ -101,17 +101,17 @@ const Sidebar: FC<TProps> = ({}) => {
         <div className="flex flex-col gap-3">
           {/* Кнопка "Вийти" */}
           <button
-            className="group flex items-center gap-3 transition-all duration-300 ease-in-out"
+            className="group flex items-center gap-3 transition-all duration-300 ease-in-out cursor-pointer"
             onClick={onLogout}
           >
-            <div className="w-8 h-8 rounded-full flex items-center justify-center bg-transparent group-hover:bg-red-500/20 transition-all duration-300 ease-in-out">
+            <div className="w-8 h-8 rounded-full flex items-center justify-center bg-transparent transition-all duration-300 ease-in-out">
               <img
                 src="/logout.svg"
                 alt="Вийти"
-                className="w-6 h-6 transition-all duration-300 ease-in-out group-hover:brightness-110"
+                className="w-6 h-6 transition-all duration-300 ease-in-out group-hover:brightness-125"
               />
             </div>
-            <span className="text-[#B0B0B0] group-hover:text-red-400 text-[16px] transition-all duration-300 ease-in-out group-hover:translate-x-1">
+            <span className="text-[#B0B0B0] text-[16px] group-hover:text-[#D0D0D0]">
               Вийти
             </span>
           </button>
