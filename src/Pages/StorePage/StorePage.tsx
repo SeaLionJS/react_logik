@@ -4,6 +4,7 @@ import {
   useLoginMutation,
   useLogoutMutation,
 } from "@/Store/api/accounts";
+import Loader from "@/Widgets/Loader/Loader";
 import React, { FC, useState } from "react";
 
 const StorePage: FC<{}> = ({}) => {
@@ -18,8 +19,18 @@ const StorePage: FC<{}> = ({}) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  if (isLoading || isDesciplineLoading) {
-    return "...loading";
+  // Показувати лоадер поки немає даних АБО йде завантаження
+  if (
+    isLoading ||
+    isDesciplineLoading ||
+    (!data && !isUserError) ||
+    !disciplineData
+  ) {
+    return (
+      <>
+        <Loader />
+      </>
+    );
   }
 
   const onLogin = async () => {

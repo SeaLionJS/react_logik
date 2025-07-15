@@ -13,6 +13,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper"; // Для фону таблиці
+import Loader from "@/Widgets/Loader/Loader";
 
 const ArmyPage: FC<{}> = ({}) => {
   const { data, isLoading } = useGetDisciplinesQuery("");
@@ -50,7 +51,7 @@ const ArmyPage: FC<{}> = ({}) => {
   }, [isLoading, finalProgress]);
 
   if (isLoading) {
-    return "...loading";
+    return Loader;
   }
 
   console.log(data);
