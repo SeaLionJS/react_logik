@@ -1,5 +1,6 @@
 import { PieChart } from "@mui/x-charts/PieChart";
 import { BarChart } from "@mui/x-charts/BarChart";
+import Loader from "@/Widgets/Loader/Loader";
 
 import { TrendingUp, TrendingDown } from "lucide-react";
 import React, { useState, useMemo } from "react";
